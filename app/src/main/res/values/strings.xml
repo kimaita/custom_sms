@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">CustomSMS</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">Send Custom SMS</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="permission_not_granted">SMS permission NOT granted.</string>
+    <string name="def_sms">Hello %s,\nThis is Kelvin James Kimaita, running for Delegate in the Department of Enterprise Computing. Vote for me.</string>
+    <string name="send_sms">Send SMS</string>
+    <string name="grant_sms">Grant SMS Permission</string>
+    <string name="recipient_count">%d Recipients</string>
+    <string name="permission_granted">Send SMS permission already granted</string>
+</resources>

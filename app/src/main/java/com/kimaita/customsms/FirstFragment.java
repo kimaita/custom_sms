@@ -28,7 +28,6 @@ import com.kimaita.customsms.databinding.FragmentFirstBinding;
 
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Consumer;
 
 public class FirstFragment extends Fragment {
 
@@ -57,17 +56,19 @@ public class FirstFragment extends Fragment {
 
         initializeReceivers();
 
-        Map<String, String> contacts = new Contacts().getContactList();
+        Map<String, String> contacts = new Contacts(requireContext()).getContactList();
+        String smsBody = binding.textSmsbody.getText().toString();
 
         binding.btnSendSms.setOnClickListener(view1 -> {
             checkRequestSmsPermission();
-            sendTexts.accept(contacts);
+            sendTexts(contacts, smsBody);
         });
 
         binding.btnRequestPermission.setOnClickListener(v ->
                 checkRequestSmsPermission());
 
         binding.textRecipients.setText(getString(R.string.recipient_count, contacts.size()));
+
     }
 
     @Override
@@ -125,11 +126,12 @@ public class FirstFragment extends Fragment {
         binding.btnRequestPermission.setVisibility(View.INVISIBLE);
     }
 
-    Consumer<Map<String, String>> sendTexts = map ->
-            map.forEach((k, v) -> {
-                k = getString(R.string.def_sms, k);
-                sendSMS(v, k);
-            });
+    public void sendTexts(Map<String, String> contacts, String smsBody) {
+        contacts.forEach((k, v) -> {
+            String msg = String.format(smsBody, v);
+            sendSMS(k, msg);
+        });
+    }
 
     private void sendSMS(String number, String message) {
 
@@ -170,13 +172,11 @@ public class FirstFragment extends Fragment {
             Bundle bundle = intent.getExtras();
             // Need to check for error messages
             Log.i(TAG, "Message: Sent. Result: " + bundle);
-            Toast.makeText(getContext(), "Message sent", Toast.LENGTH_LONG).show();
         } else if (action.equals(INTENT_ACTION_DELIVERY)) {
             Bundle bundle = intent.getExtras();
             Set<String> keys = bundle.keySet();
             // Need to check for error messages
             Log.i(TAG, "Message: Delivered. Result: " + bundle + " " + keys);
-            Toast.makeText(getContext(), "Message delivered", Toast.LENGTH_LONG).show();
         }
     }
 }
